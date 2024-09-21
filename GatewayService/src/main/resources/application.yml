@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+      routes:
+        - id: employee-service
+          uri: lb://EMPLOYEE-SERVICE
+          predicates:
+            - Path=/api/employees/**
+        - id: timezone-service
+          uri: lb://TIMEZONE-SERVICE
+          predicates:
+            - Path=/api/timezone/**
+
+server:
+  port: 8083
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    preferIpAddress: true
+
+jwt:
+  secret: ${JWT_SECRET:36F4A8EB4B18CAC332F9DBA5DC1E1775D6EB45BCDD6F9F90B741791B65724758}  # Use an environment variable, with a default
+  expirationTime: 864000000 # 10 days
+  tokenPrefix: "Bearer "
+  headerString: "Authorization"
+
+logging:
+  level:
+    root: INFO
+    com.ust: DEBUG
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.web.reactive: DEBUG
+    reactor.netty: DEBUG
+    com.netflix.eureka: DEBUG
+    com.netflix.discovery: DEBUG
+  pattern:
+    console: "%msg%n"

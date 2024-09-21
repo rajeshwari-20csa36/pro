@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: TIMEZONE-SERVICE
+  datasource:
+    url: jdbc:h2:mem:timezonedb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+server:
+  port: 8081
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    preferIpAddress: true
+    instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+logging:
+   level:
+      org.springframework.web: DEBUG
+      org.hibernate: DEBUG
+      com.netflix.eureka: DEBUG
+      com.netflix.discovery: DEBUG
+
+application:
+  security:
+    jwt:
+      secret-key: 36F4A8EB4B18CAC332F9DBA5DC1E1775D6EB45BCDD6F9F90B741791B65724758
